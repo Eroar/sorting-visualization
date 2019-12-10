@@ -7,13 +7,15 @@ import pygame
 
 
 if __name__ == "__main__":
-    NUMBER_OF_COLUMNS = 10
-    arr = [random.randint(0, 255) for _ in range(NUMBER_OF_COLUMNS)]
+    NUMBER_OF_COLUMNS = 200
+    # arr = [random.randint(0, 255) for _ in range(NUMBER_OF_COLUMNS)]
+    arr = [i for i in range(1,200)]
+    random.shuffle(arr)
     workingOnColor = (255, 0, 0)
     baseColor = (0, 0, 255)
     finishedColor = (0, 255, 0)
     
-    TIME_BETWEEN = 3
+    TIME_BETWEEN = 0
 
     screen = Screen(res=(1000, 500))
 
@@ -21,24 +23,22 @@ if __name__ == "__main__":
     while swapped:
         swapped = False
         for sPos in range(len(arr)-1):
-            arr, colorArr = bubbleSort.beforeIteration(arr, sPos, workingOnColor, baseColor)
+            arrBefore, colorArr = bubbleSort.beforeIteration(arr, sPos, workingOnColor, baseColor)
             if TIME_BETWEEN > 0.01:
-                # screen.drawColumns(arr, colorArr)
+                screen.drawColumns(arr, colorArr)
                 time.sleep(TIME_BETWEEN)
 
-            arr, colorArr, nSwapped = bubbleSort.afterIteration(arr, sPos, workingOnColor, baseColor)
+            arrAfter, colorArr, nSwapped = bubbleSort.afterIteration(arrBefore, sPos, workingOnColor, baseColor)
             if nSwapped:
                 swapped = True
-            screen.drawColumns(arr, colorArr)
-            time.sleep(TIME_BETWEEN)
+            screen.drawColumns(arrAfter, colorArr)
             for event in pygame.event.get():
-                # Close the program if the user presses the 'X'
                 if event.type == pygame.QUIT:
                     quit()
+            time.sleep(TIME_BETWEEN)
     greenColor = [finishedColor for _ in range(len(arr))]
     while True:
         for event in pygame.event.get():
-            # Close the program if the user presses the 'X'
             if event.type == pygame.QUIT:
                 quit()
     

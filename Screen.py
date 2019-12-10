@@ -23,28 +23,31 @@ class Screen:
     def drawColumns(self, listOfColumns, listOfColors):
         if len(listOfColumns)!=len(listOfColors):
             raise Exception("len(listOfColumns)!=len(listOfColors)")
-        colWidth = math.floor(self._res[0]/len(listOfColumns))
+        colWidth = self._res[0]/len(listOfColumns)
 
         highestCol = max(listOfColumns)
         self._screen.fill(self._background)
         for columnH, columnColor, i in zip(listOfColumns, listOfColors, range(len(listOfColumns))):
-            high2Draw = self._res[1] - math.floor(self._res[1] * (columnH/highestCol))
+            high2Draw = self._res[1] - self._res[1] * (columnH/highestCol)
             pygame.draw.rect(self._screen, columnColor, (i*colWidth, high2Draw, colWidth, self._res[1]-high2Draw), 0)
         
-        diffs = self._getDifferenceInLists(self._lastListOfColors, listOfColors)
-        diffs2 = self._getDifferenceInLists(self._lastListOfColumns, listOfColumns)
-        if diffs2!=-1:
-            diffs += diffs2
-        print("diffs", diffs)
-        if diffs== -1:
+        diffs = self._getDifferenceInLists(self._lastListOfColumns, listOfColumns)
+        diffs2 = self._getDifferenceInLists(self._lastListOfColors, listOfColors)
+        
+        if (diffs == -1) and (diffs2 == -1):
             pygame.display.update()
+        
         else:
+            if diffs == -1:
+                diffs = []
+            if diffs2!=-1:
+                diffs += diffs2
             rects=[]
             for diff in diffs:
                 rects.append(pygame.Rect(diff*colWidth, 0, colWidth, self._res[1]))
             pygame.display.update(rects)
-        self._lastListOfColors = listOfColors
-        self._lastListOfColumns = listOfColumns
+        self._lastListOfColors = listOfColors.copy()
+        self._lastListOfColumns = listOfColumns.copy()
 
 
 if __name__ == "__main__":
@@ -54,3 +57,7 @@ if __name__ == "__main__":
     screen = Screen()
     while True:
         screen.drawColumns([1,5,3], [red, green, blue])
+        for event in pygame.event.get():
+            # Close the program if the user presses the 'X'
+            if event.type == pygame.QUIT:
+                quit()
