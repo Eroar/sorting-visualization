@@ -7,9 +7,9 @@ import pygame
 
 
 if __name__ == "__main__":
-    NUMBER_OF_COLUMNS = 200
-    # arr = [random.randint(0, 255) for _ in range(NUMBER_OF_COLUMNS)]
-    arr = [i for i in range(1,200)]
+    NUMBER_OF_COLUMNS = 100
+    arr = [random.randint(0, 255) for _ in range(NUMBER_OF_COLUMNS)]
+    # arr = [i for i in range(1,200)]
     random.shuffle(arr)
     workingOnColor = (255, 0, 0)
     baseColor = (0, 0, 255)
