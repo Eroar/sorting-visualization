@@ -1,9 +1,8 @@
 from Screen import Screen
 import time
 import random
-import bubbleSort
+from sortingAlgorithms import bubbleSortGen
 import pygame
-
 
 
 if __name__ == "__main__":
@@ -19,30 +18,28 @@ if __name__ == "__main__":
 
     screen = Screen(res=(1000, 500))
 
-    swapped = True
-    while swapped:
-        swapped = False
-        for sPos in range(len(arr)-1):
-            arrBefore, colorArr = bubbleSort.beforeIteration(arr, sPos, workingOnColor, baseColor)
-            if TIME_BETWEEN > 0.01:
-                screen.drawColumns(arr, colorArr)
-                time.sleep(TIME_BETWEEN)
+    bubSort = bubbleSortGen(arr, workingOnColor, baseColor)
+    onlyColor = True
+    for data, colors in bubSort:
+        if onlyColor:
+            onlyColor = False
+        else:
+            screen.drawColumns(data, colors)
+            onlyColor = True
 
-            arrAfter, colorArr, nSwapped = bubbleSort.afterIteration(arrBefore, sPos, workingOnColor, baseColor)
-            if nSwapped:
-                swapped = True
-            screen.drawColumns(arrAfter, colorArr)
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    quit()
-            time.sleep(TIME_BETWEEN)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
+        time.sleep(TIME_BETWEEN)
+
+
     greenColor = [finishedColor for _ in range(len(arr))]
+    screen.drawColumns(arr, greenColor)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quit()
     
-        screen.drawColumns(arr, greenColor)
         time.sleep(TIME_BETWEEN)
 
     
